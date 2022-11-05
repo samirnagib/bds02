@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.bds02.dto.CityDTO;
 import com.devsuperior.bds02.entities.City;
 import com.devsuperior.bds02.repositories.CityRepository;
+import com.devsuperior.bds02.services.exceptions.EntityNotFoundException;
 
 @Service
 public class CityService {
@@ -28,7 +29,7 @@ public class CityService {
 	@Transactional(readOnly = true)
 	public CityDTO findById(Long id) {
 		Optional<City> obj = repository.findById(id);
-		City entity = obj.get();
+		City entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
 
 		return new CityDTO(entity);
 	}
