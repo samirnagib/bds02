@@ -2,6 +2,8 @@ package com.devsuperior.bds02.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +28,7 @@ public class Event implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "city_id")
 	private City city;
+	
 	
 	public Event() {
 	}

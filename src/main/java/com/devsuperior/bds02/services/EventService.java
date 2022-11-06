@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,7 @@ public class EventService {
 		entity.setName(dto.getName());
 		entity.setDate(dto.getDate());
 		entity.setUrl(dto.getUrl());
-		//entity.setCity
+		entity.setCity(new City(dto.getCityId(), null));
 		entity = repository.save(entity);
 		return new EventDTO(entity);
 		 
@@ -49,8 +51,19 @@ public class EventService {
 	}
 
 	public EventDTO update(Long id, EventDTO dto) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Event entity = repository.getOne(id);
+			entity.setName(dto.getName());
+			entity.setDate(dto.getDate());
+			entity.setUrl(dto.getUrl());
+			entity.setCity(new City(dto.getCityId(), null));
+			entity = repository.save(entity);
+			return new EventDTO(entity);
+		} 
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found " + id );
+		}
+		
 	}
 
 	public void delete(Long id) {
